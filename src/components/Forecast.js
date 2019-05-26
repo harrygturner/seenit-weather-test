@@ -4,9 +4,7 @@ import TempConverter from './TempConverter';
 
 const Forecast = props => {
    
-   useEffect(() => {
-      props.appearForecastPrediction();
-   }, [])
+   useEffect(() => props.appearForecastPrediction());
 
    return(
       <div id='forecast' className='section centre top'>
@@ -30,12 +28,12 @@ const Forecast = props => {
                   <p>Humidity: <span className='bold'>{props.humidity}%</span></p>
                   <p>Wind: <span className='bold'>{props.windSpeed} mph</span></p>
                   <p>Pressure: <span className='bold'>{props.pressure} hPa</span></p>
+               </div>
+               <div className='general centre'>
+                  <p>Sunrise: <span className='bold'>{props.getTime(props.sunrise)}</span></p>
+                  <p>Sunset: <span className='bold'>{props.getTime(props.sunset)}</span></p>
                   <p>Cloudiness: <span className='bold'>{props.cloudCover}%</span></p>
                </div>
-            </div>
-            <div className='day_time'>
-               <p>Sunrise: {props.getTime(props.sunrise)}</p>
-               <p>Sunset: {props.getTime(props.sunset)}</p>
             </div>
          </div>
       </div>

@@ -41,7 +41,7 @@ export default class App extends Component {
   }
 
   getForecast = (lat, lon) => {
-    fetch(`https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${openWeatherApiKey}`)
+    fetch(`https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${openWeatherApiKey}&units=imperial`)
       .then(resp => resp.json())
       .then(forecast => {
         if(forecast){
@@ -123,7 +123,9 @@ export default class App extends Component {
   render() {
     return (
       <div className="App">
-        < Animation />
+        < Animation 
+          weatherType={this.state.forecast ? this.state.forecast['weather'][0]['main'] : null}
+        />
         < Location 
           handleLocationInput={this.handleLocationInput} 
           error={this.state.error}

@@ -1,9 +1,3 @@
-#background {
-   position: absolute;
-   /* display: grid;
-   grid-template-rows: 20% 80%; */
-}
-
 #sunny {
    background: skyblue;
 }
@@ -13,10 +7,6 @@
    display: grid;
    grid-template-rows: 20% 80%;
 }
-
-/* #background div {
-   border: solid 1px black;
-} */
 
 .clouds {
    position: relative;
