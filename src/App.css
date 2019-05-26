@@ -15,6 +15,10 @@
   align-items: center;
 }
 
+#location {
+  display: none;
+}
+
 #location .content {
   z-index: 2;
 }
