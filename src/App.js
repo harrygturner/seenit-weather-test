@@ -3,7 +3,7 @@ import './App.css';
 
 import Location from './containers/Location';
 import Animation from './containers/background/Animation';
-import Forecast from './containers/Forecast';
+import Forecast from './components/Forecast';
 
 const openWeatherApiKey = 'f5c5dbaaf83d52dec5e6b6814d7e0c4c';
 const googleMapsApiKey= 'AIzaSyBuFJWHFDt8qmZvZ44ljjknargpC2SXhTw';
@@ -11,9 +11,12 @@ const googleMapsApiKey= 'AIzaSyBuFJWHFDt8qmZvZ44ljjknargpC2SXhTw';
 export default class App extends Component {
 
   state = {
+    city: 'london',
+    country: 'uk',
     lat: null,
     lng: null,
-    forecast: {},
+    temp: 'degrees',
+    forecast: null,
     error: ''
   }
 
@@ -30,6 +33,7 @@ export default class App extends Component {
             lng
           })
           this.getForecast(lat, lng);
+          this.hideLocationForm();
         } else {
           this.setState({ error: "Location can't be found." })
         }
@@ -43,11 +47,78 @@ export default class App extends Component {
         if(forecast){
           this.setState({ forecast })
         } else {
-          debugger
           this.setState({ error: 'Server error!' })
         }
-      })
+    })
+  }
+
+  appearForecastPrediction = () => {
+    const weather = document.querySelector('#forecast');
+    weather.classList.remove('top');
+    weather.classList.add('middle');
+  }
+
+  hideLocationForm = () => {
+    const form = document.querySelector('#location');
+    form.classList.remove('middle');
+    form.classList.add('bottom')
+  }
+
+  upperCaseFirst = string => string.charAt(0).toUpperCase() + string.slice(1);
+
+  getDateAndTime = timestamp => {
+    const daysOfWeek = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+    const date = new Date(timestamp * 1000);
+    return `${daysOfWeek[date.getDay()]} ${this.getTime(timestamp)}`;
+  }
+
+  getTime = timestamp => {
+    const date = new Date(timestamp * 1000);
+    const hour = date.getHours() < 10 ? '0' + date.getHours() : date.getHours()
+    const minutes = date.getMinutes() < 10 ? '0' + date.getMinutes() : date.getMinutes();
+    return `${hour}:${minutes}`;
+  }
+
+  toDegrees = farenheit => (farenheit - 32) * (5 / 9);
+
+  handleTemperatureUnitChange = event => {
+    const target = event.target.classList;
+    if (target.contains('farenheit')){
+      target.add('highlight');
+      document.querySelector('.degrees').classList.remove('highlight');
+      this.setState({ temp: 'farenheit' });
+    } else if (target.contains('degrees')){
+      target.add('highlight');
+      document.querySelector('.farenheit').classList.remove('highlight');
+      this.setState({ temp: 'degrees' })
     }
+  }
+  
+  renderForecast = () => {
+    const { forecast } = this.state;
+    return(
+      < Forecast
+        city={this.upperCaseFirst(this.state.city)}
+        country={this.upperCaseFirst(this.state.country)}
+        getDateAndTime={this.getDateAndTime}
+        getTime={this.getTime}
+        handleTemperatureUnitChange={this.handleTemperatureUnitChange}
+        appearForecastPrediction={this.appearForecastPrediction}
+        temperature={this.state.temp === 'degrees'
+          ? this.toDegrees((forecast['main']['temp']))
+          : (forecast['main']['temp'])
+        }
+        humidity={forecast['main']['humidity']}
+        windSpeed={forecast['wind']['speed']}
+        pressure={forecast['main']['pressure']}
+        cloudCover={forecast['clouds']['all']}
+        sunrise={forecast['sys']['sunrise']}
+        sunset={forecast['sys']['sunset']}
+        time={forecast['dt']}
+        type={forecast['weather'][0]['main']}
+      />
+    )
+  }
     
   render() {
     return (
@@ -57,7 +128,7 @@ export default class App extends Component {
           handleLocationInput={this.handleLocationInput} 
           error={this.state.error}
         />
-        < Forecast />
+        {this.state.forecast ? this.renderForecast() : null }
       </div>
     )
   }
