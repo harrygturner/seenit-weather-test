@@ -1,10 +1,15 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import WeatherIcon from './WeatherIcon';
 import TempConverter from './TempConverter';
 
 const Forecast = props => {
+   
+   useEffect(() => {
+      props.appearForecastPrediction();
+   }, [])
+
    return(
-      <div id='forecast' className='section centre'>
+      <div id='forecast' className='section centre top'>
          <div className='content'>
             <div className='header'>
                <h2>{props.city}, {props.country}</h2>

@@ -16,49 +16,7 @@ export default class App extends Component {
     lat: null,
     lng: null,
     temp: 'degrees',
-    forecast: {
-      "coord": {
-        "lon": -0.13,
-        "lat": 51.51
-      },
-      "weather": [
-        {
-          "id": 521,
-          "main": "Rain",
-          "description": "shower rain",
-          "icon": "09d"
-        }
-      ],
-      "base": "stations",
-      "main": {
-        "temp": 291.78,
-        "pressure": 1012,
-        "humidity": 68,
-        "temp_min": 289.15,
-        "temp_max": 294.82
-      },
-      "visibility": 10000,
-      "wind": {
-        "speed": 8.2,
-        "deg": 260
-      },
-      "clouds": {
-        "all": 90
-      },
-      "dt": 1558879078,
-      "sys": {
-        "type": 1,
-        "id": 1414,
-        "message": 0.029,
-        "country": "GB",
-        "sunrise": 1558842907,
-        "sunset": 1558900815
-      },
-      "timezone": 3600,
-      "id": 2643743,
-      "name": "London",
-      "cod": 200
-    },
+    forecast: null,
     error: ''
   }
 
@@ -75,6 +33,7 @@ export default class App extends Component {
             lng
           })
           this.getForecast(lat, lng);
+          this.hideLocationForm();
         } else {
           this.setState({ error: "Location can't be found." })
         }
@@ -88,11 +47,22 @@ export default class App extends Component {
         if(forecast){
           this.setState({ forecast })
         } else {
-          debugger
           this.setState({ error: 'Server error!' })
         }
-      })
-    }
+    })
+  }
+
+  appearForecastPrediction = () => {
+    const weather = document.querySelector('#forecast');
+    weather.classList.remove('top');
+    weather.classList.add('middle');
+  }
+
+  hideLocationForm = () => {
+    const form = document.querySelector('#location');
+    form.classList.remove('middle');
+    form.classList.add('bottom')
+  }
 
   upperCaseFirst = string => string.charAt(0).toUpperCase() + string.slice(1);
 
@@ -123,9 +93,34 @@ export default class App extends Component {
       this.setState({ temp: 'degrees' })
     }
   }
+  
+  renderForecast = () => {
+    const { forecast } = this.state;
+    return(
+      < Forecast
+        city={this.upperCaseFirst(this.state.city)}
+        country={this.upperCaseFirst(this.state.country)}
+        getDateAndTime={this.getDateAndTime}
+        getTime={this.getTime}
+        handleTemperatureUnitChange={this.handleTemperatureUnitChange}
+        appearForecastPrediction={this.appearForecastPrediction}
+        temperature={this.state.temp === 'degrees'
+          ? this.toDegrees((forecast['main']['temp']))
+          : (forecast['main']['temp'])
+        }
+        humidity={forecast['main']['humidity']}
+        windSpeed={forecast['wind']['speed']}
+        pressure={forecast['main']['pressure']}
+        cloudCover={forecast['clouds']['all']}
+        sunrise={forecast['sys']['sunrise']}
+        sunset={forecast['sys']['sunset']}
+        time={forecast['dt']}
+        type={forecast['weather'][0]['main']}
+      />
+    )
+  }
     
   render() {
-    const { forecast } = this.state
     return (
       <div className="App">
         < Animation />
@@ -133,25 +128,7 @@ export default class App extends Component {
           handleLocationInput={this.handleLocationInput} 
           error={this.state.error}
         />
-        < Forecast 
-          city={this.upperCaseFirst(this.state.city)}
-          country={this.upperCaseFirst(this.state.country)}
-          getDateAndTime={this.getDateAndTime}
-          getTime={this.getTime}
-          handleTemperatureUnitChange={this.handleTemperatureUnitChange}
-          temperature={this.state.temp === 'degrees' 
-            ? this.toDegrees(forecast['main']['temp']) 
-            : forecast['main']['temp']
-          }
-          humidity={forecast['main']['humidity']}
-          windSpeed={forecast['wind']['speed']}
-          pressure={forecast['main']['pressure']}
-          cloudCover={forecast['clouds']['all']}
-          sunrise={forecast['sys']['sunrise']}
-          sunset={forecast['sys']['sunset']}
-          time={forecast['dt']}
-          type={forecast['weather'][0]['main']}
-        />
+        {this.state.forecast ? this.renderForecast() : null }
       </div>
     )
   }

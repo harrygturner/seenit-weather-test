@@ -28,7 +28,7 @@ export default class Location extends Component {
 
    render() {
       return(
-         <div id='location' className='section centre'>
+         <div id='location' className='section centre middle'>
             <div className='content'>
                <div className='intro'>
                   <h2>How is the weather looking in your local area?</h2>

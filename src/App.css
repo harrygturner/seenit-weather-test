@@ -7,16 +7,13 @@
   width: 100vw;
   overflow: hidden;
   position: absolute;
+  transition: top 5s;
 }
 
 .centre {
   display: flex;
   justify-content: center;
   align-items: center;
-}
-
-#location {
-  display: none;
 }
 
 #location .content {
@@ -84,6 +81,19 @@
 /* #forecast div {
   border: solid 1px black;
 } */
+
+#forecast.middle,
+#location.middle {
+  top: 0vh;
+}
+
+#forecast.top {
+  top: -100vh;
+}
+
+#location.bottom {
+  top: 100vh;
+}
 
 #forecast .content {
   width: 800px;
@@ -161,4 +171,8 @@
 
 .bold {
   font-weight: bold;
+}
+
+.hidden {
+  display: none;
 }
