@@ -15,6 +15,7 @@ export default class App extends Component {
     country: 'uk',
     lat: null,
     lng: null,
+    temp: 'degrees',
     forecast: {
       "coord": {
         "lon": -0.13,
@@ -96,12 +97,35 @@ export default class App extends Component {
   upperCaseFirst = string => string.charAt(0).toUpperCase() + string.slice(1);
 
   getDateAndTime = timestamp => {
-    const daysOfWeek = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
+    const daysOfWeek = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
     const date = new Date(timestamp * 1000);
-    return `${daysOfWeek[date.getDay()]} ${date.getHours()}:${date.getMinutes()}` 
+    return `${daysOfWeek[date.getDay()]} ${this.getTime(timestamp)}`;
+  }
+
+  getTime = timestamp => {
+    const date = new Date(timestamp * 1000);
+    const hour = date.getHours() < 10 ? '0' + date.getHours() : date.getHours()
+    const minutes = date.getMinutes() < 10 ? '0' + date.getMinutes() : date.getMinutes();
+    return `${hour}:${minutes}`;
+  }
+
+  toDegrees = farenheit => (farenheit - 32) * (5 / 9);
+
+  handleTemperatureUnitChange = event => {
+    const target = event.target.classList;
+    if (target.contains('farenheit')){
+      target.add('highlight');
+      document.querySelector('.degrees').classList.remove('highlight');
+      this.setState({ temp: 'farenheit' });
+    } else if (target.contains('degrees')){
+      target.add('highlight');
+      document.querySelector('.farenheit').classList.remove('highlight');
+      this.setState({ temp: 'degrees' })
+    }
   }
     
   render() {
+    const { forecast } = this.state
     return (
       <div className="App">
         < Animation />
@@ -112,8 +136,21 @@ export default class App extends Component {
         < Forecast 
           city={this.upperCaseFirst(this.state.city)}
           country={this.upperCaseFirst(this.state.country)}
-          forecast={this.state.forecast}
           getDateAndTime={this.getDateAndTime}
+          getTime={this.getTime}
+          handleTemperatureUnitChange={this.handleTemperatureUnitChange}
+          temperature={this.state.temp === 'degrees' 
+            ? this.toDegrees(forecast['main']['temp']) 
+            : forecast['main']['temp']
+          }
+          humidity={forecast['main']['humidity']}
+          windSpeed={forecast['wind']['speed']}
+          pressure={forecast['main']['pressure']}
+          cloudCover={forecast['clouds']['all']}
+          sunrise={forecast['sys']['sunrise']}
+          sunset={forecast['sys']['sunset']}
+          time={forecast['dt']}
+          type={forecast['weather'][0]['main']}
         />
       </div>
     )

@@ -80,3 +80,85 @@
   color: red;
   margin-top: 5%;
 }
+
+/* #forecast div {
+  border: solid 1px black;
+} */
+
+#forecast .content {
+  width: 800px;
+}
+
+#forecast .content .header {
+  text-align: left;
+}
+
+#forecast .content .header h2, 
+#forecast .content .header h4 {
+  margin: 1% 2%;
+}
+
+#forecast .details {
+  display: grid;
+  grid-template-columns: 10% 20% 40% 30%;
+  height: 80px;
+}
+
+#forecast .icon i {
+  font-size: 30px;
+}
+
+#forecast .temp {
+  position: relative;
+  font-size: 24px;
+  font-weight: bold;
+}
+
+#forecast .converter {
+  position: absolute;
+  right: 5%;
+  top: 2%;
+  width: 50px;
+}
+
+#forecast .converter>div {
+  display: inline;
+  font-size: 17px;
+  cursor: pointer;
+  color: white;
+}
+
+#forecast .converter .degrees {
+  padding-right: 13%;
+  border-right: solid 1px black;
+}
+
+#forecast .converter .farenheit {
+  padding-left: 10%;
+}
+
+#forecast .converter .highlight {
+  font-size: bold;
+  color: black;
+}
+
+#forecast .details .general,
+#forecast .day_time {
+  text-align: left;
+}
+
+#forecast .details .general {
+  display: grid;
+}
+
+#forecast .details .general p {
+  margin: 2% 0%;
+}
+
+#forecast .day_time {
+  margin: 5% 2%;
+}
+
+.bold {
+  font-weight: bold;
+}
