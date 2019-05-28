@@ -42,6 +42,13 @@ If you have npm alread installed on your computer then go ahead and install the 
 
 `npm install`
 
-Start the app with:
+Before starting the app, however, you will need to add your own API keys into the `src/App.js` file. These are clearly located at the top of the file and are commented out at present: 
+
+```
+// const openWeatherApiKey = < insert open weather api key here >;
+// const googleMapsApiKey= < insert google maps api key here >;
+```
+
+Once you have added your own API keys then please start the app with:
 
 `npm start`
