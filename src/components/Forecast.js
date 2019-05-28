@@ -35,6 +35,9 @@ const Forecast = props => {
                   <p>Cloudiness: <span className='bold'>{props.cloudCover}%</span></p>
                </div>
             </div>
+            <div className='back'>
+               <button onClick={e => props.handleGoBack(e)}>GO BACK</button>
+            </div>
          </div>
       </div>
    )
