@@ -5,20 +5,22 @@ import Location from './containers/Location';
 import Animation from './containers/background/Animation';
 import Forecast from './components/Forecast';
 
-const openWeatherApiKey = 'f5c5dbaaf83d52dec5e6b6814d7e0c4c';
-const googleMapsApiKey= 'AIzaSyBuFJWHFDt8qmZvZ44ljjknargpC2SXhTw';
+// const openWeatherApiKey = < insert open weather api key here >;
+// const googleMapsApiKey= < insert google maps api key here >;
 
 export default class App extends Component {
 
   state = {
-    city: 'london',
-    country: 'uk',
+    city: '',
+    country: '',
     lat: null,
     lng: null,
     temp: 'degrees',
     forecast: null,
     error: ''
   }
+
+  // ---------------------------- API calls ----------------------------------
 
   handleLocationInput = locationQuery => {
     const { city, country } = locationQuery;
@@ -29,6 +31,8 @@ export default class App extends Component {
         if (data.results.length !== 0){
           const {lat, lng} = data.results[0].geometry.location;
           this.setState({
+            city,
+            country,
             lat,
             lng
           })
@@ -52,17 +56,40 @@ export default class App extends Component {
     })
   }
 
+// ---------------------- Change component view ---------------------------
+
+  animate = (element, remove, add) => {
+    element.classList.remove(remove);
+    element.classList.add(add);
+  }
+
   appearForecastPrediction = () => {
     const weather = document.querySelector('#forecast');
-    weather.classList.remove('top');
-    weather.classList.add('middle');
+    this.animate(weather, 'top', 'middle');
   }
 
   hideLocationForm = () => {
     const form = document.querySelector('#location');
-    form.classList.remove('middle');
-    form.classList.add('bottom')
+    this.animate(form, 'middle', 'bottom');
   }
+
+  appearLocationForm = () => {
+    const form = document.querySelector('#location');
+    this.animate(form, 'bottom', 'middle');
+  }
+
+  hideForecastPrediction = () => {
+    const weather = document.querySelector('#forecast');
+    this.animate(weather, 'middle', 'top');
+  }
+
+  handleGoBack = event => {
+    event.preventDefault();
+    this.appearLocationForm();
+    this.hideForecastPrediction();
+  }
+
+  // ---------------------- format content structure -----------------------
 
   upperCaseFirst = string => string.charAt(0).toUpperCase() + string.slice(1);
 
@@ -116,6 +143,7 @@ export default class App extends Component {
         sunset={forecast['sys']['sunset']}
         time={forecast['dt']}
         type={forecast['weather'][0]['main']}
+        handleGoBack={this.handleGoBack}
       />
     )
   }
@@ -125,6 +153,7 @@ export default class App extends Component {
       <div className="App">
         < Animation 
           weatherType={this.state.forecast ? this.state.forecast['weather'][0]['main'] : null}
+          animate={this.animate}
         />
         < Location 
           handleLocationInput={this.handleLocationInput} 

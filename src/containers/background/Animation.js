@@ -25,18 +25,14 @@ export default class Animation extends Component {
    }
 
    changeToRaining = (sunnyEL, rainingEl) => {
-      sunnyEL.classList.remove('middle');
-      sunnyEL.classList.add('left');
-      rainingEl.classList.remove('right');
-      rainingEl.classList.add('middle');
+      this.props.animate(sunnyEL, 'middle', 'left');
+      this.props.animate(rainingEl, 'right', 'middle');
       return new Promise(() => console.log('Now raining!'))
    }
 
    changeToSunny = (sunnyEL, rainingEl) => {
-      rainingEl.classList.remove('middle');
-      rainingEl.classList.add('right');
-      sunnyEL.classList.remove('left');
-      sunnyEL.classList.add('middle');
+      this.props.animate(sunnyEL, 'left', 'middle');
+      this.props.animate(rainingEl, 'middle', 'right');
    }
 
    render() {
