@@ -1,4 +1,4 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# WEATHER APPLICATION
 
 ## Coding Challenge
 
@@ -26,6 +26,22 @@ Feel free to show us what you can do, at Seenit we love to be impressed.
 * Make your changes (We dont expect you to spend a long time on this, hopefully you can get this done in a few hours)
 * Send us a link to your repo either directly or through your recruiter
 
+## Running Locally
 
+Go to this repository and click on the 'Clone or download' green button. Then copy the URL that appears (git@github.com:harrygturner/seenit-weather-test.git).
 
+Open up terminal and move yourself into a directory you wish this file to be located in and then issue the command below into the command line:
 
+`git clone <URL you copied (git@github.com:harrygturner/seenit-weather-test.git)>`
+
+Then using the command line (`cd`) enter the file you just created and ensure npm has been installed by entering:
+
+`npm -v`
+
+If you have npm alread installed on your computer then go ahead and install the dependecies with:
+
+`npm install`
+
+Start the app with:
+
+`npm start`
